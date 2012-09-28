@@ -55,7 +55,7 @@ def VMC(WF,numSteps):
 		OldPos= R.copy()
 		oldWfc= WF.WaveFunction(R)
 		for ptcl in xrange(0,len(R)):         		 #### looping over the partices
-			R[ptcl] = numpy.add( R[ptcl],numpy.random.rand(3)*1.5) ## new pos?
+			R[ptcl] = numpy.add( R[ptcl], (numpy.random.rand(3) - 0.6)*1.5 ) ## new pos?
 		newWfc= WF.WaveFunction(R) 		 #### finding wavefunction for the new pos
 #		print "newWfc:" , newWfc, "  oldWfc:", oldWfc
 		ratio = (newWfc**2/oldWfc**2)
@@ -92,14 +92,15 @@ def potentialE(ions, elecs):
 	ionTwo=ions[1]
 	elecOne=elecs[0]
 	elecTwo=elecs[1]
-	ionElec = -invDistance(ionOne,elecOne) - invDistance(ionOne,elecTwo)
+	ionElec = -invDistance(ionOne,elecOne) - invDistance(ionOne,elecTwo)  -invDistance(ionTwo,elecOne) - invDistance(ionTwo,elecTwo) 
 	elecElec= invDistance(elecOne,elecTwo)*2
 	ionIon = invDistance(ionOne,ionTwo)*2 
 	v = ionElec + elecElec + ionIon	
 	return v
 
 def invDistance(posa, posb):
-	dis = numpy.dot(posa,posb)
+	diff = numpy.subtract(posb,posa)
+	dis = numpy.dot(diff,diff)
 	inv = numpy.divide(1,dis)
 	return dis
  
